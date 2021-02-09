@@ -1,7 +1,7 @@
-const mongoose = require('./database/config.js');
+const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-const Category = new Schema(
+const Category = new schema(
     {
       nom: {
         type: String,

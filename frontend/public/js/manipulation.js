@@ -18,6 +18,7 @@ let language = {
       welcome: "مرحبا بكم في سناك ديليس",
       subtitle: "اختر اللغة التي تريدها",
       subtitledelivery: "اختر طريقة الأكل التي تريدها",
+      subtitle2:"اختر الوجبة أو المنتج الذي تريده",
       eat_in: "أكل هنا",
       eat_out: "طلبية للاخذ"
     }, 
@@ -25,6 +26,7 @@ let language = {
       welcome: "Bienvenue chez SnackDélice",
       subtitle: "Choisissez la langue que vous voulez",
       subtitledelivery: "Choisissez la méthode Eat que vous voulez",
+      subtitle2:"Choisissez le repas ou le produit que vous souhaitez",
       eat_in: "Manger ici",
       eat_out: "Emporter"
     }, 
@@ -32,6 +34,7 @@ let language = {
       welcome: "Welcome To SnackDélice",
       subtitle: "Choose the language you want",
       subtitledelivery: "Choose the Eat Method you want",
+      subtitle2:"Choose the Meal or Product you want",
       eat_in: "Eat here",
       eat_out: "Take Away"
     } 
@@ -52,6 +55,10 @@ function fillLang(lang){
           subtitleDelivery.innerHTML = language.arabe.subtitledelivery;
           eatIn.innerHTML = language.arabe.eat_in;
           takeWith.innerHTML = language.arabe.eat_out;
+        }else if(location.href.indexOf('MealsMenu') > -1)
+        {
+          title.innerHTML = language.arabe.welcome;
+          subtitle2.innerHTML = language.arabe.subtitle2;
         }
              
     }else if(lang == "french"){
@@ -67,6 +74,10 @@ function fillLang(lang){
         subtitleDelivery.innerHTML = language.french.subtitledelivery;
         eatIn.innerHTML = language.french.eat_in;
         takeWith.innerHTML = language.french.eat_out;
+      }else if(location.href.indexOf('MealsMenu') > -1)
+      {
+        title.innerHTML = language.french.welcome;
+          subtitle2.innerHTML = language.french.subtitle2;
       }
   
     }else if(lang == "english"){
@@ -82,13 +93,21 @@ function fillLang(lang){
         subtitleDelivery.innerHTML = language.english.subtitledelivery;
         eatIn.innerHTML = language.english.eat_in;
         takeWith.innerHTML = language.english.eat_out;
+      }else if(location.href.indexOf('MealsMenu') > -1)
+      {
+        title.innerHTML = language.english.welcome;
+          subtitle2.innerHTML = language.english.subtitle2;
       }
 
     }
   
 }
 
-btn_ar.addEventListener('click', function(){
+
+if(location.href.indexOf('Home') > -1)
+{
+
+  btn_ar.addEventListener('click', function(){
 
     localStorage.setItem('Lang', "arabe");
     location.href = "eatMethod.html";
@@ -107,11 +126,18 @@ btn_en.addEventListener('click', function(){
     location.href = "eatMethod.html";
 });
 
-eatIn.addEventListener('click', function(){
+}else if(location.href.indexOf('eatMethod') > -1)
+{
 
-  location.href = "MealsMenu.html";
-})
-takeWith.addEventListener('click', function(){
+  eatIn.addEventListener('click', function(){
 
-  location.href = "MealsMenu.html";
-})
+    location.href = "MealsMenu.html";
+  })
+  takeWith.addEventListener('click', function(){
+  
+    location.href = "MealsMenu.html";
+  })
+}
+
+
+

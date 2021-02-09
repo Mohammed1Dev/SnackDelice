@@ -1,7 +1,7 @@
-const mongoose = require('./database/config.js');
+const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-const ProductSchema = new schema({
+const Product = new schema({
 
     
         nom: {
@@ -19,19 +19,20 @@ const ProductSchema = new schema({
             required: true,
             trim: true
         },
+        Quantity: {
+            type: Number,
+            required: true,
+            trim: true
+        },
         codePromo: {
             type: String,
         },
-        sousCategory: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'SouCategory'
-        },
-        category: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Category'
-        },
         image: {
             type: String
+        }, 
+        souCategory: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'SousCategory'
         }
      
 }, 
@@ -40,4 +41,4 @@ const ProductSchema = new schema({
 });
 
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Product', Product);
