@@ -164,13 +164,13 @@ body.innerHTML +=`
                                         background-repeat: no-repeat;"></div>
 									</td>
                                         <td class="product-name">
-                                            <h3>${data[i].product_panier[j].nom}</h3>
+                                            <h3 class="produit_name">${data[i].product_panier[j].nom}</h3>
                                         </td>
                                         <td class="price"> ${data[i].product_panier[j].prix}</td>
                                         <td class="quantity">
                                             <div class="input-group mb-3">
                                            
-                                                <input class="quantity form-control input-number" max="${data[i].product_panier[j].Quantity}" min="1" onchange="changeFunction('${data[i]._id}',${data[i].product_panier[j].Quantity},this.value)" name="quantity" id="inputQ${data[i].product_panier[j]._id}"  type="number" value="${data[i].Quantity}">
+                                                <input class="quantityPanier form-control input-number" max="${data[i].product_panier[j].Quantity}" min="1" onchange="changeFunction('${data[i]._id}',${data[i].product_panier[j].Quantity},this.value)" name="quantity" id="inputQ${data[i].product_panier[j]._id}"  type="number" value="${data[i].Quantity}">
                                             </div>
                                         </td>
                                         <td class="total">
@@ -202,20 +202,53 @@ body.innerHTML +=`
             Quantity:quantite
     }).then(function(response){
         console.log("Update " + response);
+        getAllPanier();
     }).catch(function(err){
         console.log(err);
     });
-       location.href="MealsMenu.html";
+   
+    
     }
 }
 
 function prixTotalProduct(){
+    let ListPromo=["12345","AZERTY"];
+   
     var priceTotal=0;
+    var total=0;
+    var codePromo=document.getElementById("codePromo");
+    var valuePromo=document.getElementById("Valuecode");
     var PrixTotalProduit=document.getElementsByClassName("prixTotal");
+    var TotalPrixProduit=document.getElementById("Total");
 for(var i=0;i<PrixTotalProduit.length;i++){
-    priceTotal +=parseInt(PrixTotalProduit[i].innerHTML);
+    if(codePromo.value === ListPromo[0]){
+
+        priceTotal += parseInt(PrixTotalProduit[i].innerHTML)-parseInt(PrixTotalProduit[i].innerHTML)*0.1;
+        total +=parseInt(PrixTotalProduit[i].innerHTML);
+        TotalPrixProduit.innerHTML = total  + "DH";
+        valuePromo.innerHTML="10%";
+        TotalPrixProduit.style = "text-decoration:line-through";
+        document.getElementById("priceTotal").innerHTML= priceTotal + " DHs ";
+
+    }else if(codePromo.value==ListPromo[1]){
+        priceTotal +=parseInt(PrixTotalProduit[i].innerHTML)-parseInt(PrixTotalProduit[i].innerHTML)*0.3;
+        total +=parseInt(PrixTotalProduit[i].innerHTML);
+        TotalPrixProduit.innerHTML = total  + "DH";
+        valuePromo.innerHTML="30%";
+        TotalPrixProduit.style = "text-decoration:line-through";
+        document.getElementById("priceTotal").innerHTML= priceTotal + " DHs ";
+
+    }else{
+        priceTotal +=parseInt(PrixTotalProduit[i].innerHTML);
+        TotalPrixProduit.style = "text-decoration:none";
+        valuePromo.innerHTML="None";
+         TotalPrixProduit.innerHTML =priceTotal + "DH";
+         document.getElementById("priceTotal").innerHTML= priceTotal + ".00 DHs ";
+
+    }
+
+    
 }
-document.getElementById("priceTotal").innerHTML= priceTotal + ".00 DHs";
    
 }
 
@@ -223,6 +256,57 @@ document.getElementById("priceTotal").innerHTML= priceTotal + ".00 DHs";
 async function deletePanierProduct(idp){
     var doc = await axios.get(`http://localhost:3000/api/removePanier/${idp}`);
     var supprimer = doc.data;
-    location.href="MealsMenu.html";
+    getAllPanier();
+   // location.href="MealsMenu.html";
 }
 
+//Download pdf Client - Side 
+
+function pdfDownload(){
+    // var valuePromo=document.getElementById("Valuecode");
+    // var total =   document.getElementsByClassName("prixTotal");
+    // var quantity =  document.getElementsByClassName("quantityPanier");
+    // var Produit_nom= document.getElementsByClassName("produit_name");
+    // var PrixTotal =document.getElementById("priceTotal");
+    // var affich="";
+    // for(var i=0;i<total.length;i++){
+    // affich +=Produit_nom[i].innerHTML + " x la quantity est :  "  + quantity[i].value  + " le prix est : " +total[i].innerHTML + "\n" ;
+    // }
+    // affich +="Le Value promo : " + valuePromo.innerHTML + " le Prix Total est : " + PrixTotal.innerHTML;
+    // console.log(affich);
+    //     var commande={
+    //     content : [{
+    //         affich,style:'table'
+    //     }],
+    //     styles:{ 
+    //         table:{
+    //             fontSize:22,
+    //             bold:true
+
+    //         }
+    //       }
+    // };
+
+    var docDefinition = {
+        content: [
+          { text: 'This is a header', style: 'header' },
+          'No styling here, this is a standard paragraph',
+          { text: 'Another text', style: 'anotherStyle' },
+          { text: 'Multiple styles applied', style: [ 'header', 'anotherStyle' ] }
+        ],
+      
+        styles: {
+          header: {
+            fontSize: 22,
+            bold: true
+          },
+          anotherStyle: {
+            italics: true,
+            alignment: 'right'
+          }
+        }
+      };
+
+    pdfMake.createPdf(docDefinition).download();
+
+}
